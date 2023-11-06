@@ -11,8 +11,7 @@ class Organism():
         self.buriedW = buriedW
         self.heightW = heightW
         self.terrainW = terrainW
-    
-        self.boolMatrix = array([[False for _ in range(10)] for _ in range(20)])
+
         self.heldPiece = 0           #Piece n# divided by 7
         self.nextPiece = 0           #Piece n# divided by 7
         self.currentPiece = 0        #Piece n# divided by 7
@@ -25,7 +24,6 @@ class Organism():
             self.update()
 
             click(self.posCosts.index(min(self.posCosts))/10+0.1, 1)
-            print(self.boolMatrix)
     
     def cost(self, boolMatrix):
         holes = 0
@@ -56,6 +54,7 @@ class Organism():
         return sum([holes*self.holesW, buried*self.buriedW, height*self.heightW, terrain*self.terrainW])
     
     def update(self):
+        self.boolMatrix = array([[False for _ in range(10)] for _ in range(20)])
         for i in range(10):
             sleep(0.1)
             move(i/10)
@@ -64,7 +63,7 @@ class Organism():
             #image.save("a" + str(i) + ".png")
 
             image = array(image)                             #For working with each pixel
-            for y in range(12, 20):
+            for y in range(6, 20):
                 for x in range(10):
                     if image[26*y+1][26*x+1] != 0:
                         self.boolMatrix[y][x] = True
