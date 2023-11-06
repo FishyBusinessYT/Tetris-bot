@@ -5,8 +5,6 @@ from Interface import click
 from Interface import move
 from Cost import cost
 
-sleep(3)
-
 class Organism():
     def __init__(self, holesW:int, buriedW:int, heightW:int, terrainW:int) -> None:
         self.holesW = holesW
