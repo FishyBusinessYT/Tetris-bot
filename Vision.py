@@ -40,7 +40,7 @@ posCosts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 def update() -> None:
     global boolMatrix, heldPiece, nextPiece, currentPiece, previousHeldPiece
     for i in range(10):
-        sleep(0.1)
+        sleep(0.5)
         move(i/10)
 
         image = grab((844, 436, 1103, 955)).convert("L") #Grayscale image of the game
@@ -51,7 +51,14 @@ def update() -> None:
             for x in range(10):
                 if image[26*y+1][26*x+1] != 0:
                     boolMatrix[y][x] = True
+                else:
+                    boolMatrix[y][x] = False
         
+        print(boolMatrix)
+
         posCosts[i] = cost(boolMatrix)
     
     click(posCosts.index(min(posCosts))/10+0.1, 1)
+
+sleep(3)
+update()
