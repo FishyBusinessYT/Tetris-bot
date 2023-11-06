@@ -2,6 +2,7 @@ from PIL.ImageGrab import grab
 from numpy import array
 from time import sleep
 from Interface import click
+from Cost import cost
 
 #Game screen starts at (573, 396), ends at (1373, 996)
 #Board corner at square 271, 40
