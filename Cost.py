@@ -32,4 +32,4 @@ def cost(boolMatrix):
         terrain += (abs(heights[idx] - heights[idx+1]) + abs(heights[idx] - heights[idx-1]))/2
         idx += 1
 
-    return sum(holes*holesW, buried*buriedW, height*heightW, terrain*terrainW)
+    return sum([holes*holesW, buried*buriedW, height*heightW, terrain*terrainW])
