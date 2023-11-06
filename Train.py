@@ -8,5 +8,5 @@ for i in range(8):
         org = Organism(f.readline(), f.readline(), f.readline(), f.readline())
         org.play(0.15)
         scores[i] = str(input("Enter organism score: "))
+
     
-            
