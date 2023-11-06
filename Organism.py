@@ -56,7 +56,7 @@ class Organism():
     def update(self):
         self.boolMatrix = array([[False for _ in range(10)] for _ in range(20)])
         for i in range(10):
-            sleep(0.1)
+            sleep(0.05)
             move(i/10)
 
             image = grab((844, 436, 1103, 955)).convert("L") #Grayscale image of the game
