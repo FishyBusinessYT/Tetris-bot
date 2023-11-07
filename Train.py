@@ -14,14 +14,17 @@ def offspring(path1, path2, n):
     if path1 == "rand":
         with open("./gen1/org" + str(n) + ".txt", "w") as offspring:
             for x in range(4):
-                offspring.write(str(r(1, 20)/10))
+                offspring.write(str(r(1, 20)/10) + "\n")
+        return
 
     p = [open(path1, "r").readlines(), open(path2, "r").readlines()]
     with open("./gen1/org" + str(n) + ".txt", "w") as offspring:
         for x in range(4):
             offspring.write(p[r(0, 1)][x])
 
-while True:
+i = 0
+while i < 50:
+    i += 1
     for i in range(8):
         sleep(5)
         with open("./gen0/org" + str(i) + ".txt", "r+") as f:
@@ -51,5 +54,3 @@ while True:
 
     for i in range(8):
         copy_file("./gen1/org" + str(i) + ".txt", "./gen0/org" + str(i) + ".txt")
-
-    input("Pause for stopping the training. Press enter to continue.")
