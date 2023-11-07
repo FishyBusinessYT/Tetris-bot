@@ -16,6 +16,10 @@ from Cost import cost
 #671, 150
 #658, 150
 
+#Scoreboard coordinates:
+#656 774
+#776 802
+
 #Grayscale codes:
 #1- Line: 127
 #2- Box: 167

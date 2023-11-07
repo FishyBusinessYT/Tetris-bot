@@ -1,6 +1,7 @@
 from Organism import Organism
 from random import randint as r
 from time import sleep
+from Interface import restart
 
 scores = [0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -13,7 +14,7 @@ def offspring(path1, path2, n):
     if path1 == "rand":
         with open("./gen1/org" + str(n) + ".txt", "w") as offspring:
             for x in range(4):
-                offspring.write(str(r(1, 100)/10))
+                offspring.write(str(r(1, 20)/10))
 
     p = [open(path1, "r").readlines(), open(path2, "r").readlines()]
     with open("./gen1/org" + str(n) + ".txt", "w") as offspring:
@@ -26,7 +27,8 @@ while True:
         with open("./gen0/org" + str(i) + ".txt", "r+") as f:
             org = Organism(f.readline(), f.readline(), f.readline(), f.readline())
             org.play(0.5)
-            scores[i] = int(input("Enter organism score: "))
+            scores[i] = org.get_score()
+        restart()
 
     elite1 = scores.index(sorted(scores)[-1])
     elite2 = scores.index(sorted(scores)[-2])

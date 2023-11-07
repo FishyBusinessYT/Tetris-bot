@@ -4,6 +4,9 @@ from time import sleep, time
 from Interface import click
 from Interface import move
 from Cost import cost
+import pytesseract
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 class Organism():
     def __init__(self, holesW:int, buriedW:int, heightW:int, terrainW:int) -> None:
@@ -71,3 +74,8 @@ class Organism():
                         self.boolMatrix[y][x] = False
             
             self.posCosts[i] = cost(self.boolMatrix)
+    
+    def get_score(self):
+        img = grab((656, 775, 777, 802))
+        score = pytesseract.image_to_string(img, config='--psm 6 -c tessedit_char_whitelist=0123456789')
+        return int(score)
