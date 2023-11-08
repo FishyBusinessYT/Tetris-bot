@@ -3,32 +3,28 @@ from numpy import array, rot90, delete, insert
 from time import sleep, time
 from Interface import click
 from Interface import move
-from Cost import cost
 import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 class Organism():
-    def __init__(self, holesW:int, buriedW:int, heightW:int, terrainW:int) -> None:
-        self.holesW = holesW
-        self.buriedW = buriedW
-        self.heightW = heightW
-        self.terrainW = terrainW
+    def __init__(self, holesW:str, buriedW:str, heightW:str, terrainW:str) -> None:
+        self.holesW = float(holesW.replace("\n", ""))
+        self.buriedW = float(buriedW.replace("\n", ""))
+        self.heightW = float(heightW.replace("\n", ""))
+        self.terrainW = float(terrainW.replace("\n", ""))
 
-        self.heldPiece = 0           #Piece n# divided by 7
-        self.nextPiece = 0           #Piece n# divided by 7
-        self.currentPiece = 0        #Piece n# divided by 7
-        self.previousHeldPiece = 0   #Piece n# divided by 7
         self.posCosts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def play(self, minutes):
         start = time()
         while time()-start < minutes*60:
             self.update()
-
             click(self.posCosts.index(min(self.posCosts))/10+0.1, 1)
+            #input()
+            #sleep(3)
     
-    def cost(self, boolMatrix):
+    def cost(self, boolMatrix, lines):
         holes = 0
         buried = 0
         height = 0
@@ -50,7 +46,8 @@ class Organism():
                     heights[idx1] = 20-idx if not heights[idx1] else heights[idx1]
                     layers += 1
                 else:
-                    buried += layers if heights[idx1] else 0
+                    buried += 1 if heights[idx1] else 0
+                    #buried += layers if heights[idx1] else 0
 
         terrain += abs(heights[0] - heights[1])
         terrain += abs(heights[-2] - heights[-1])
@@ -59,33 +56,40 @@ class Organism():
             terrain += (abs(heights[idx] - heights[idx+1]) + abs(heights[idx] - heights[idx-1]))/2
             idx += 1
 
-        return sum([holes*self.holesW, buried*self.buriedW, height*self.heightW, terrain*self.terrainW])
+        print(buried, height, terrain, heights)
+        print(self.buriedW, self.heightW, self.terrainW)
+
+        return sum([buried*self.buriedW, height*self.heightW, terrain*self.terrainW, -lines*2]) #Removed holes*self.holesW from sum
     
     def update(self):
         self.boolMatrix = array([[False for _ in range(10)] for _ in range(20)])
         for i in range(10):
-            sleep(0.05)
-            move(0.1 + i/10)
+            move(i/10)
+            sleep(0.04)
 
             image = grab((844, 436, 1103, 955)).convert("L") #Grayscale image of the game
+            
             #image.save("a" + str(i) + ".png")
 
             image = array(image)                             #For working with each pixel
 
-            for y in range(3, 20):
+            lines = 0
+
+            for y in range(6, 20):
                 for x in range(10):
                     if image[26*y+1][26*x+1] != 0:
-                        try:
-                            self.boolMatrix[y][x] = True
-                        except TypeError:
-                            print(self.boolMatrix)
+                        self.boolMatrix[y][x] = True
                     else:
                         self.boolMatrix[y][x] = False
                 if self.boolMatrix[y].all() == True:
+                    lines += 1
                     self.boolMatrix = delete(self.boolMatrix, y, axis=0)
                     self.boolMatrix = insert(self.boolMatrix, 0, [False for _ in range(10)], axis=0)
             
-            self.posCosts[i] = cost(self.boolMatrix)
+            self.posCosts[i] = self.cost(self.boolMatrix, lines)
+        #print(self.posCosts)
+        #input()
+        
     
     def get_score(self):
         img = grab((656, 775, 777, 802))

@@ -10,7 +10,7 @@ def click(normalizedpos, left):
         mouse_event(8, 0, 0); mouse_event(16, 0, 0)
 
 def move(normalizedpos):
-    SetCursorPos((int(259*normalizedpos) + 843, 945))
+    SetCursorPos((int(259*normalizedpos) + 855, 945))
 
 def restart():
     for i in range(40):

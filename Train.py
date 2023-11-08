@@ -27,12 +27,12 @@ def offspring(path1, path2, n):
                 offspring.write(p[r(0, 1)][x])
 
 start = time()
-while time() - start <= 60*120:
+while time() - start <= 60*10:
     for i in range(8):
-        sleep(5)
+        sleep(3)
         with open("./gen0/org" + str(i) + ".txt", "r+") as f:
             org = Organism(f.readline(), f.readline(), f.readline(), f.readline())
-            org.play(2)
+            org.play(1)
             scores[i] = org.get_score()
         restart()
 
@@ -45,20 +45,20 @@ while time() - start <= 60*120:
     offspring("./gen0/org" + str(elite1) + ".txt", "./gen0/org" + str(elite2) + ".txt", 3)
 
     offspring(
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
         4)
     offspring(
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
         5)
     offspring(
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
         6)
     offspring(
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
-        "./gen0/org" + str(scores.index(sorted(scores)[r(0, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
+        "./gen0/org" + str(scores.index(sorted(scores)[r(2, 6)])) + ".txt",
         7)
     
 
