@@ -1,5 +1,5 @@
 from PIL.ImageGrab import grab
-from numpy import array, rot90
+from numpy import array, rot90, delete, insert
 from time import sleep, time
 from Interface import click
 from Interface import move
@@ -42,10 +42,15 @@ class Organism():
                 for column in row:
                     holes += int(not column)
 
+
         for idx1, column in enumerate(rot90(boolMatrix)):
+            layers = 0
             for idx, row in enumerate(column):
-                heights[idx1] = 20-idx if row and not heights[idx1] else heights[idx1]
-                buried += int(not row) if heights[idx1] else 0
+                if row:
+                    heights[idx1] = 20-idx if not heights[idx1] else heights[idx1]
+                    layers += 1
+                else:
+                    buried += layers if heights[idx1] else 0
 
         terrain += abs(heights[0] - heights[1])
         terrain += abs(heights[-2] - heights[-1])
@@ -60,22 +65,35 @@ class Organism():
         self.boolMatrix = array([[False for _ in range(10)] for _ in range(20)])
         for i in range(10):
             sleep(0.05)
-            move(i/10)
+            move(0.1 + i/10)
 
             image = grab((844, 436, 1103, 955)).convert("L") #Grayscale image of the game
             #image.save("a" + str(i) + ".png")
 
             image = array(image)                             #For working with each pixel
-            for y in range(6, 20):
+
+            for y in range(3, 20):
                 for x in range(10):
                     if image[26*y+1][26*x+1] != 0:
-                        self.boolMatrix[y][x] = True
+                        try:
+                            self.boolMatrix[y][x] = True
+                        except TypeError:
+                            print(self.boolMatrix)
                     else:
                         self.boolMatrix[y][x] = False
+                if self.boolMatrix[y].all() == True:
+                    self.boolMatrix = delete(self.boolMatrix, y, axis=0)
+                    self.boolMatrix = insert(self.boolMatrix, 0, [False for _ in range(10)], axis=0)
             
             self.posCosts[i] = cost(self.boolMatrix)
     
     def get_score(self):
         img = grab((656, 775, 777, 802))
-        score = pytesseract.image_to_string(img, config='--psm 6 -c tessedit_char_whitelist=0123456789')
+        score = 0
+        while True:
+            try:
+                score = int(score)
+                break
+            except ValueError:
+                score = pytesseract.image_to_string(img, config='--psm 6 -c tessedit_char_whitelist=0123456789')
         return int(score)
