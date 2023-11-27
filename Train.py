@@ -27,12 +27,12 @@ def offspring(path1, path2, n):
                 offspring.write(p[r(0, 1)][x])
 
 start = time()
-while time() - start <= 60*10:
+while time() - start <= 60*60:
     for i in range(8):
         sleep(3)
         with open("./gen0/org" + str(i) + ".txt", "r+") as f:
             org = Organism(f.readline(), f.readline(), f.readline(), f.readline())
-            org.play(1)
+            org.play()
             scores[i] = org.get_score()
         restart()
 

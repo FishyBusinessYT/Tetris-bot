@@ -16,13 +16,12 @@ class Organism():
 
         self.posCosts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-    def play(self, minutes):
-        start = time()
-        while time()-start < minutes*60:
+    def play(self):
+        img = [[[0]]]
+        while img[0][0][0] != 53:
+            img = array(grab((1080, 800, 1081, 801)))
             self.update()
             click(self.posCosts.index(min(self.posCosts))/10+0.1, 1)
-            #input()
-            #sleep(3)
     
     def cost(self, boolMatrix, lines):
         holes = 0
@@ -62,6 +61,7 @@ class Organism():
         return sum([buried*self.buriedW, height*self.heightW, terrain*self.terrainW, -lines*2]) #Removed holes*self.holesW from sum
     
     def update(self):
+        sleep(0.05)
         self.boolMatrix = array([[False for _ in range(10)] for _ in range(20)])
         for i in range(10):
             move(i/10)
@@ -75,7 +75,7 @@ class Organism():
 
             lines = 0
 
-            for y in range(6, 20):
+            for y in range(0, 20):
                 for x in range(10):
                     if image[26*y+1][26*x+1] != 0:
                         self.boolMatrix[y][x] = True
